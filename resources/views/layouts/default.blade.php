@@ -47,5 +47,4 @@
   @stack('after-script')
 
 </body>
-
 </html>

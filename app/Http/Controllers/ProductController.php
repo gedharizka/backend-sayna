@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Str;
+
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -16,7 +19,7 @@ class ProductController extends Controller
     {
         $items = Product::all();
 
-        return view('pages.products.index')-> with([
+        return view('pages.products.index')->with([
             'items' => $items
         ]);
     }
@@ -28,7 +31,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.products.create');
     }
 
     /**
@@ -37,9 +40,13 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->name);
+
+        Product::create($data);
+        return redirect()->route('products.index');
     }
 
     /**
